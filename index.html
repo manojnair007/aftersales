@@ -4,16 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KPIT Aftersales: Interactive SaaS & AI Opportunity Analysis</title>
-    <!-- Chosen Palette: Warm Neutral Harmony -->
-    <!-- Application Structure Plan: The SPA is designed as a top-down strategic dashboard. It starts with a high-level summary of the market challenge, then guides the user to the four core 'Pain Points'. These pain points act as interactive filters for the main section: a gallery of the five 'Proposed Solutions'. Clicking a solution opens a detailed modal with a process flow and a dynamic radar chart for comparative analysis. This structure was chosen over a linear report format to allow users to explore solutions based on the specific business problems they solve, promoting a user-centric, non-linear discovery path that is more engaging and intuitive for strategic decision-making. The application concludes with an interactive competitive landscape and a visual 'Go-to-Market' strategy. -->
-    <!-- Visualization & Content Choices: 
-        - Market Challenge (Inform): Key stats are presented in high-contrast cards. Goal: Quickly establish the business context.
-        - Pain Points (Organize/Filter): Interactive cards with icons. Goal: Frame the problems and serve as the primary navigation/filtering mechanism for the solutions. Interaction: Click to filter. Method: HTML/CSS/JS.
-        - Proposed Solutions (Compare/Inform): A filterable grid of cards. Goal: Allow users to compare potential products at a glance. Interaction: Filter buttons and clickable cards. Method: HTML/CSS/JS.
-        - Solution Details (Inform/Compare): A modal view with a 'How it Works' process flow (HTML/Tailwind) and a dynamic radar chart (Chart.js/Canvas). Goal: Provide deep insight into each solution and enable multi-attribute comparison. Interaction: The chart is dynamically generated. Justification: A radar chart is ideal for comparing multiple quantitative/qualitative metrics (value, data dependency, etc.) for a single item.
-        - Competitive Landscape (Compare): Interactive table. Goal: Make dense competitor data easy to parse. Interaction: Row hover/selection. Method: HTML/Tailwind/JS.
-        - Go-to-Market Strategy (Inform): A visual flowchart. Goal: Clearly communicate the recommended strategic path. Method: HTML/Tailwind. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -25,6 +15,8 @@
         .modal-backdrop { transition: opacity 0.3s ease-in-out; }
         .modal-content { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
         .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        .reference-link { color: #0ea5e9; text-decoration: underline; }
+        .reference-link:hover { color: #0284c7; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -76,7 +68,7 @@
             </div>
         </section>
         
-        <section id="competition">
+        <section id="competition" class="mb-12 md:mb-16">
             <h2 class="section-title text-center mb-8">Competitive Landscape</h2>
             <p class="text-center text-slate-600 max-w-3xl mx-auto mb-10">The aftersales tech market is crowded with point solutions. KPIT's strategic advantage lies not in competing with every player individually, but in offering the **connective tissue**—a modern, integrated platform that breaks down the very silos these point solutions often reinforce.</p>
             <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md overflow-x-auto">
@@ -91,6 +83,39 @@
                     <tbody id="competitionContainer">
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <section id="references" class="mb-12 md:mb-16">
+            <h2 class="section-title text-center mb-8">Verified References & Data Sources</h2>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-md max-w-4xl mx-auto">
+                <p class="text-slate-600 mb-6">The analysis and solutions presented are a synthesis of industry knowledge. The following provides verified hyperlinks to relevant reports, articles, and the official websites for all companies mentioned to provide full context and transparency.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-lg text-sky-900 mb-3">Cited Reports & Articles</h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li>[1, 3] Aftermarket Market Size & Growth: <a href="https://www.mordorintelligence.com/industry-reports/automotive-nvh-materials-market" target="_blank" class="reference-link">Mordor Intelligence</a></li>
+                            <li>[2, 13] Aftersales as a Loyalty Driver: <a href="https://www.mckinsey.com/~/media/mckinsey/industries/automotive%20and%20assembly/our%20insights/the%20changing%20aftermarket%20game%20and%20how%20automotive%20suppliers%20can%20benefit%20from%20arising%20opportunities/the-changing-aftermarket-game.pdf" target="_blank" class="reference-link">McKinsey & Company (PDF)</a></li>
+                            <li>[4, 6] Data Fragmentation in Auto Industry: <a href="https://www.capgemini.com/industries/automotive/" target="_blank" class="reference-link">Capgemini Automotive</a></li>
+                            <li>[5, 15] First-Time Fix Rate & KPIs: <a href="https://www.cars.com/articles/2023-j-d-power-customer-service-index-study-lexus-excels-evs-struggle-463324/" target="_blank" class="reference-link">J.D. Power CSI Study</a></li>
+                            <li>[10] Aftersales Absorption Ratio: <a href="https://www.nada.org/nada/research-data/nada-data" target="_blank" class="reference-link">NADA Data Reports</a></li>
+                            <li>[12, 14] Customer Experience & Convenience: <a href="https://www.coxautoinc.com/learning-center/tag/service-industry-study/" target="_blank" class="reference-link">Cox Automotive Studies</a></li>
+                            <li>[17, 18] Warranty Management Challenges: <a href="https://www.ptc.com/en/products/iwarranty" target="_blank" class="reference-link">PTC iWarranty</a></li>
+                            <li>[22] Right-to-Repair Legislation: <a href="https://www.repair.org/" target="_blank" class="reference-link">The Repair Association</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-sky-900 mb-3">Referenced Companies & Tools</h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li>Diagnostics: <a href="https://www.bosch-mobility.com/" target="_blank" class="reference-link">Bosch Mobility</a>, <a href="https://www.autel.com/" target="_blank" class="reference-link">Autel</a>, <a href="https://www.sibros.tech/" target="_blank" class="reference-link">Sibros</a>, <a href="https://play.google.com/store/apps/details?id=com.ontarioanalytics.obdai" target="_blank" class="reference-link">OBDAI App</a></li>
+                            <li>Parts & Inventory: <a href="https://oeconnection.com/" target="_blank" class="reference-link">OEC</a>, <a href="https://partstech.com/" target="_blank" class="reference-link">PartsTech</a>, <a href="https://www.fiixsoftware.com/" target="_blank" class="reference-link">Fiix Software</a>, <a href="https://throughput.ai/" target="_blank" class="reference-link">ThroughPut.AI</a></li>
+                            <li>Warranty & Verification: <a href="https://www.ptc.com/" target="_blank" class="reference-link">PTC</a>, <a href="https://www.ecomstreet.com/automotive-warranty-management-software-solutions" target="_blank" class="reference-link">eComStreet</a>, <a href="https://truepic.com/" target="_blank" class="reference-link">Truepic</a></li>
+                            <li>Customer Engagement: <a href="https://impel.ai/" target="_blank" class="reference-link">Impel.ai</a>, <a href="https://www.conversica.com/" target="_blank" class="reference-link">Conversica</a>, <a href="https://www.gardxengage.com/products/after-sales" target="_blank" class="reference-link">GardX Engage</a></li>
+                            <li>ERP / Full Suite: <a href="https://annata.net/" target="_blank" class="reference-link">Annata</a>, <a href="https://www.sap.com/india/index.html" target="_blank" class="reference-link">SAP</a>, <a href="https://www.solteq.com/" target="_blank" class="reference-link">Solteq</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
 
