@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPIT Aftersales: Interactive SaaS & AI Opportunity Analysis</title>
+    <!-- Chosen Palette: Warm Neutral Harmony -->
+    <!-- Application Structure Plan: The SPA is designed as a top-down strategic dashboard. It starts with a high-level summary of the market challenge, then guides the user to the four core 'Pain Points'. These pain points act as interactive filters for the main section: a gallery of the five 'Proposed Solutions'. Clicking a solution opens a detailed modal with a process flow and a dynamic radar chart for comparative analysis. This structure was chosen over a linear report format to allow users to explore solutions based on the specific business problems they solve, promoting a user-centric, non-linear discovery path that is more engaging and intuitive for strategic decision-making. The application concludes with an interactive competitive landscape and a visual 'Go-to-Market' strategy. -->
+    <!-- Visualization & Content Choices: 
+        - Market Challenge (Inform): Key stats are presented in high-contrast cards. Goal: Quickly establish the business context.
+        - Pain Points (Organize/Filter): Interactive cards with icons. Goal: Frame the problems and serve as the primary navigation/filtering mechanism for the solutions. Interaction: Click to filter. Method: HTML/CSS/JS.
+        - Proposed Solutions (Compare/Inform): A filterable grid of cards. Goal: Allow users to compare potential products at a glance. Interaction: Filter buttons and clickable cards. Method: HTML/CSS/JS.
+        - Solution Details (Inform/Compare): A modal view with a 'How it Works' process flow (HTML/Tailwind) and a dynamic radar chart (Chart.js/Canvas). Goal: Provide deep insight into each solution and enable multi-attribute comparison. Interaction: The chart is dynamically generated. Justification: A radar chart is ideal for comparing multiple quantitative/qualitative metrics (value, data dependency, etc.) for a single item.
+        - Competitive Landscape (Compare): Interactive table. Goal: Make dense competitor data easy to parse. Interaction: Row hover/selection. Method: HTML/Tailwind/JS.
+        - Go-to-Market Strategy (Inform): A visual flowchart. Goal: Clearly communicate the recommended strategic path. Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .section-title { font-weight: 700; font-size: 1.875rem; line-height: 2.25rem; letter-spacing: -0.025em; }
+        .card { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+        .modal-backdrop { transition: opacity 0.3s ease-in-out; }
+        .modal-content { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-3xl md:text-5xl font-bold text-sky-900 mb-2">Winning the Aftersales Battle</h1>
+            <p class="text-lg md:text-xl text-slate-600 max-w-4xl mx-auto">An interactive dashboard exploring high-value SaaS & AI opportunities for OEMs to reclaim market share from the Independent Aftermarket (IAM).</p>
+        </header>
+
+        <section id="challenge" class="mb-12 md:mb-16">
+            <h2 class="section-title text-center mb-8">The Core Challenge: Systemic Inefficiencies</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-10">The OEM aftersales ecosystem is under pressure from the agile Independent Aftermarket. This pressure is amplified by four interconnected pain points that create a cycle of inefficiency and customer dissatisfaction. This section introduces these core challenges. Click on any pain point to filter the proposed solutions below and see how they can be addressed.</p>
+            <div id="painPointsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            </div>
+        </section>
+
+        <section id="solutions" class="mb-12 md:mb-16">
+            <h2 class="section-title text-center mb-4">The Opportunity: A Portfolio of Digital Solutions</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-8">To combat these challenges, KPIT can offer a suite of scalable, data-agnostic SaaS and AI solutions. These tools are designed to break the cycle of inefficiency and empower OEM networks to compete on value, intelligence, and customer experience. Use the filters to explore solutions tailored to specific needs.</p>
+            
+            <div id="filters" class="flex flex-wrap justify-center gap-2 mb-8">
+                <button data-filter="all" class="filter-btn bg-sky-700 text-white px-4 py-2 rounded-full font-semibold">All Solutions</button>
+                <button data-filter="AI Agent" class="filter-btn bg-white text-slate-700 px-4 py-2 rounded-full font-semibold border border-slate-300">AI Agents</button>
+                <button data-filter="SaaS Platform" class="filter-btn bg-white text-slate-700 px-4 py-2 rounded-full font-semibold border border-slate-300">SaaS Platforms</button>
+            </div>
+
+            <div id="solutionsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+        <section id="strategy" class="mb-12 md:mb-16">
+            <h2 class="section-title text-center mb-8">Strategic Go-to-Market: Land & Expand</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-10">A complex sales cycle can be streamlined with a "Land and Expand" strategy. The approach is to secure an initial foothold by solving an acute, measurable pain point with a clear ROI, then leverage that success to cross-sell an integrated platform. This builds a powerful, interconnected ecosystem with high switching costs.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 p-6 bg-white rounded-xl shadow-md">
+                <div class="text-center p-6 bg-sky-100 border-2 border-sky-500 rounded-lg shadow-lg">
+                    <span class="text-sm font-bold text-sky-600 tracking-wider">STEP 1: LAND</span>
+                    <h3 class="text-xl font-bold text-sky-900 mt-1">AI Warranty Engine</h3>
+                    <p class="text-sm text-slate-600 mt-1">Solves a C-level pain point (cost/fraud) with clear, rapid ROI.</p>
+                </div>
+                <div class="text-5xl text-slate-300 mx-4 hidden md:block">&rarr;</div>
+                <div class="text-5xl text-slate-300 my-4 md:hidden">&darr;</div>
+                <div class="flex-1 text-center p-6 bg-slate-100 rounded-lg">
+                     <span class="text-sm font-bold text-slate-500 tracking-wider">STEP 2: EXPAND</span>
+                     <p class="text-slate-700 mt-2">Leverage trust and integration to introduce the full suite:</p>
+                     <div class="text-sm text-slate-600 mt-2 font-semibold">Diagnostic Co-Pilot &rarr; Predictive Parts &rarr; Retention AI &rarr; Knowledge Base</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="competition">
+            <h2 class="section-title text-center mb-8">Competitive Landscape</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-10">The aftersales tech market is crowded with point solutions. KPIT's strategic advantage lies not in competing with every player individually, but in offering the **connective tissue**—a modern, integrated platform that breaks down the very silos these point solutions often reinforce.</p>
+            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="border-b border-slate-200">
+                        <tr>
+                            <th class="p-3 font-semibold text-slate-600">Functional Area</th>
+                            <th class="p-3 font-semibold text-slate-600">Key Players</th>
+                            <th class="p-3 font-semibold text-slate-600 hidden md:table-cell">KPIT's Differentiator</th>
+                        </tr>
+                    </thead>
+                    <tbody id="competitionContainer">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modalBackdrop" class="fixed inset-0 bg-black bg-opacity-60 z-40 hidden modal-backdrop"></div>
+    <div id="solutionModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div id="modalContent" class="bg-slate-50 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform scale-95 opacity-0 modal-content">
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const DATA = {
+                painPoints: [
+                    { id: 'pp1', title: 'Data Disconnect', icon: '🔗', description: 'Siloed, inaccurate, and fragmented data across CRM, DMS, and ERP systems, preventing a single source of truth.', solutionIds: [2, 3, 5] },
+                    { id: 'pp2', title: 'Operational Inefficiency', icon: '⚙️', description: 'Manual, disjointed processes leading to workshop bottlenecks, high administrative costs, and slow service delivery.', solutionIds: [1, 2, 3, 4] },
+                    { id: 'pp3', title: 'Technician Skills Gap', icon: '🧠', description: 'Technicians struggle to keep pace with the growing complexity of EVs, hybrids, and ADAS, leading to misdiagnosis.', solutionIds: [1, 5] },
+                    { id: 'pp4', title: 'Customer Experience Deficit', icon: '😞', description: 'Outdated, inconvenient, and impersonal service interactions that fail to meet modern digital expectations.', solutionIds: [4] }
+                ],
+                solutions: [
+                    {
+                        id: 1,
+                        title: 'Universal Diagnostic Co-Pilot',
+                        type: 'AI Agent',
+                        painPoint: 'Technician Skills Gap',
+                        tagline: 'An AI co-pilot guiding technicians from symptom to solution, boosting First-Time Fix Rates.',
+                        concept: 'An AI-powered agent, delivered as a SaaS application on a workshop tablet or mobile device, that functions as an intelligent, interactive co-pilot for service technicians. It guides them through the entire diagnostic process, from symptom to solution, dramatically improving accuracy and speed.',
+                        howItWorks: [
+                            { step: 'Input', text: 'Technician inputs symptoms and OBD-II Diagnostic Trouble Codes (DTCs).' },
+                            { step: 'Analysis', text: 'AI cross-references a massive knowledge base (TSBs, repair logs) and ranks potential causes.' },
+                            { step: 'Guidance', text: 'Co-pilot provides a step-by-step diagnostic procedure, suggesting the most efficient tests.' },
+                            { step: 'Learning', text: 'Successful fixes are fed back into the AI model, making it smarter for the entire network.' },
+                        ],
+                        valueProp: [
+                            { metric: 'Improves FTFR', desc: 'Reduces misdiagnosis and costly repeat repairs.' },
+                            { metric: 'Increases Productivity', desc: 'Slashes diagnostic time, increasing workshop throughput.' },
+                            { metric: 'Reduces Warranty Costs', desc: 'Ensures only genuinely faulty parts are replaced.' },
+                        ],
+                        chartData: { 'Value Prop': 4, 'Data Agnosticism': 5, 'Scalability': 5, 'Speed to Market': 4 }
+                    },
+                    {
+                        id: 2,
+                        title: 'Predictive Parts Demand & Inventory Optimization',
+                        type: 'SaaS Platform',
+                        painPoint: 'Data Disconnect',
+                        tagline: 'A proactive, AI-driven platform that forecasts parts demand to optimize dealership inventory.',
+                        concept: 'A cloud-based SaaS platform that uses AI and machine learning to provide intelligent demand forecasting and inventory management recommendations to OEM dealership parts departments. It moves parts management from a reactive to a proactive model.',
+                         howItWorks: [
+                            { step: 'Ingestion', text: 'Pulls transactional data from DMS and enriches it with external data (VIO, weather).' },
+                            { step: 'Forecasting', text: 'ML models predict which parts will be needed, where, and when.' },
+                            { step: 'Recommendation', text: 'Provides actionable advice on optimal stock levels and flags obsolete parts.' },
+                            { step: 'Automation', text: 'Can automatically generate purchase orders to streamline procurement.' },
+                        ],
+                        valueProp: [
+                            { metric: 'Increases Parts Sales', desc: 'Prevents lost sales from stockouts.' },
+                            { metric: 'Reduces Carrying Costs', desc: 'Minimizes capital tied up in excess or obsolete inventory.' },
+                            { metric: 'Improves Efficiency', desc: 'Higher parts availability reduces repair cycle times.' },
+                        ],
+                        chartData: { 'Value Prop': 4, 'Data Agnosticism': 4, 'Scalability': 5, 'Speed to Market': 3 }
+                    },
+                     {
+                        id: 3,
+                        title: 'AI-Powered Warranty Adjudication & Fraud Detection',
+                        type: 'SaaS / AI Agent',
+                        painPoint: 'Operational Inefficiency',
+                        tagline: 'Automates warranty claim validation to reduce costs, slash processing times, and detect fraud.',
+                        concept: 'A SaaS platform with an integrated AI agent that automates the initial review, validation, and triage of incoming warranty claims. It is designed to fast-track legitimate claims while flagging suspicious or non-compliant claims for human review.',
+                        howItWorks: [
+                            { step: 'Intake', text: 'Technicians submit claims with cryptographically verified photo/video evidence.' },
+                            { step: 'Adjudication', text: 'A rules engine checks basic compliance with OEM warranty policies.' },
+                            { step: 'AI Analysis', text: 'An AI model scans for universal patterns of fraud and anomaly in claims data.' },
+                            { step: 'Triage', text: 'Claims are automatically approved, routed to a junior analyst, or escalated to a fraud expert.' },
+                        ],
+                        valueProp: [
+                            { metric: 'Reduces Warranty Costs', desc: 'Saves millions by preventing fraudulent payouts.' },
+                            { metric: 'Boosts Efficiency', desc: 'Cuts claim processing overhead by up to 75%.' },
+                            { metric: 'Improves Dealer Relations', desc: 'Dramatically speeds up payment for legitimate claims.' },
+                        ],
+                        chartData: { 'Value Prop': 5, 'Data Agnosticism': 4, 'Scalability': 5, 'Speed to Market': 5 }
+                    },
+                    {
+                        id: 4,
+                        title: 'Proactive Customer Service & Retention AI',
+                        type: 'AI Agent',
+                        painPoint: 'Customer Experience Deficit',
+                        tagline: 'A conversational AI agent that automates personalized outreach to drive loyalty and service revenue.',
+                        concept: 'A conversational AI agent that integrates with dealership CRM and DMS systems to automate personalized customer communications throughout the vehicle ownership lifecycle. Its goal is to drive service appointments, build loyalty, and prevent customer defection to the IAM.',
+                        howItWorks: [
+                            { step: 'Triggers', text: 'Monitors DMS for lifecycle events (e.g., service due, lapsed customer) to initiate outreach.' },
+                            { step: 'Personalization', text: 'Mines service history to send relevant, tailored messages via SMS or email.' },
+                            { step: 'Scheduling', text: 'Engages in natural language conversation to book appointments directly into the service calendar.' },
+                            { step: 'Feedback', text: 'Sends post-service surveys to proactively manage satisfaction and CSI scores.' },
+                        ],
+                        valueProp: [
+                            { metric: 'Increases Retention', desc: 'Builds loyalty and prevents customer defection to the IAM.' },
+                            { metric: 'Drives Revenue', desc: 'Proactively generates service appointments for the dealership.' },
+                            { metric: 'Improves CSI Scores', desc: 'Enhances communication, convenience, and satisfaction.' },
+                        ],
+                        chartData: { 'Value Prop': 5, 'Data Agnosticism': 5, 'Scalability': 5, 'Speed to Market': 4 }
+                    },
+                    {
+                        id: 5,
+                        title: 'Dynamic Technical Knowledge Base & Triage System',
+                        type: 'SaaS Platform',
+                        painPoint: 'Data Disconnect',
+                        tagline: 'A single source of truth for all technical information, powered by AI-driven semantic search.',
+                        concept: 'A centralized, cloud-based knowledge management platform that acts as the single source of truth for all OEM technical and service information. It combines a powerful, AI-driven search functionality with a structured triage system for escalating unsolvable problems.',
+                        howItWorks: [
+                            { step: 'Aggregation', text: 'Ingests and structures all OEM service content (manuals, TSBs, diagrams) into one repository.' },
+                            { step: 'Semantic Search', text: 'Technicians use plain English to ask questions and get direct answers.' },
+                            { step: 'Triage', text: 'A structured help desk system routes unsolvable problems to the right expert team.' },
+                            { step: 'Knowledge Creation', text: 'Solutions to escalated queries are captured and published back into the knowledge base.' },
+                        ],
+                         valueProp: [
+                            { metric: 'Ensures Consistency', desc: 'Guarantees every technician uses the most current, accurate procedures.' },
+                            { metric: 'Reduces Support Costs', desc: 'Empowers technicians to be more self-sufficient, reducing escalations.' },
+                            { metric: 'Improves Products', desc: 'Feeds data on common repair issues back to OEM engineering teams.' },
+                        ],
+                        chartData: { 'Value Prop': 3, 'Data Agnosticism': 3, 'Scalability': 4, 'Speed to Market': 3 }
+                    }
+                ],
+                competitors: [
+                    { area: 'Diagnostics', players: 'Bosch, Autel, Sibros, OBDAI', differentiator: 'OEM-centric, enterprise-grade platform integrated with parts, warranty, and CRM.' },
+                    { area: 'Parts Management', players: 'OEC, PartsTech, Fiix, Fleetio', differentiator: 'Focus on OEM franchised network needs, using proprietary predictive models trained on OEM data.' },
+                    { area: 'Warranty Management', players: 'PTC, Intellinet, Truepic', differentiator: 'Cross-OEM fraud detection AI model that becomes more powerful with more data.' },
+                    { area: 'Customer Engagement', players: 'Impel, Conversica, GardX', differentiator: 'Deeper integration makes outreach "smarter" using diagnostic and service data.' },
+                    { area: 'Full Suite / ERP', players: 'Annata (MS), SAP, Solteq', differentiator: 'More nimble, best-in-class, API-first modules compared to monolithic ERPs.' },
+                ]
+            };
+
+            const painPointsContainer = document.getElementById('painPointsContainer');
+            const solutionsContainer = document.getElementById('solutionsContainer');
+            const competitionContainer = document.getElementById('competitionContainer');
+            const filters = document.getElementById('filters');
+            const modalBackdrop = document.getElementById('modalBackdrop');
+            const solutionModal = document.getElementById('solutionModal');
+            const modalContent = document.getElementById('modalContent');
+            let solutionChart = null;
+
+            function renderPainPoints() {
+                painPointsContainer.innerHTML = DATA.painPoints.map(pp => `
+                    <div class="card p-6 bg-white rounded-xl border border-slate-200 shadow-sm cursor-pointer pain-point-card" data-pain-point-id="${pp.id}">
+                        <div class="text-4xl mb-3">${pp.icon}</div>
+                        <h3 class="text-xl font-bold mb-2 text-sky-900">${pp.title}</h3>
+                        <p class="text-slate-600">${pp.description}</p>
+                    </div>
+                `).join('');
+            }
+
+            function renderSolutions(filteredSolutions) {
+                solutionsContainer.innerHTML = filteredSolutions.map(s => `
+                    <div class="card bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col cursor-pointer" data-solution-id="${s.id}">
+                        <div class="p-6 flex-grow">
+                            <span class="text-xs font-bold uppercase text-sky-600 tracking-wider">${s.type}</span>
+                            <h3 class="text-xl font-bold mt-2 mb-2 text-slate-900">${s.title}</h3>
+                            <p class="text-slate-600">${s.tagline}</p>
+                        </div>
+                        <div class="bg-slate-100 px-6 py-3 text-sm font-semibold text-slate-500 border-t border-slate-200">
+                            Addresses: ${s.painPoint}
+                        </div>
+                    </div>
+                `).join('');
+                 addSolutionCardListeners();
+            }
+
+            function renderCompetition() {
+                competitionContainer.innerHTML = DATA.competitors.map(c => `
+                    <tr class="border-b border-slate-200 last:border-b-0 hover:bg-slate-50">
+                        <td class="p-3 font-semibold text-slate-800">${c.area}</td>
+                        <td class="p-3 text-slate-600">${c.players}</td>
+                        <td class="p-3 text-slate-600 hidden md:table-cell">${c.differentiator}</td>
+                    </tr>
+                `).join('');
+            }
+            
+            function openModal(solutionId) {
+                const solution = DATA.solutions.find(s => s.id == solutionId);
+                if (!solution) return;
+
+                modalContent.innerHTML = `
+                    <div class="p-6 md:p-8">
+                        <div class="flex justify-between items-start">
+                             <div>
+                                <span class="text-sm font-bold uppercase text-sky-600 tracking-wider">${solution.type}</span>
+                                <h2 class="text-2xl md:text-3xl font-bold mt-1 text-sky-900">${solution.title}</h2>
+                            </div>
+                            <button id="closeModalBtn" class="text-slate-500 hover:text-slate-800 text-2xl">&times;</button>
+                        </div>
+
+                        <p class="mt-4 text-slate-600">${solution.concept}</p>
+
+                        <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-lg font-bold mb-4 text-slate-800">How It Works</h3>
+                                <div class="space-y-4">
+                                    ${solution.howItWorks.map((item, index) => `
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 w-8 h-8 bg-sky-100 text-sky-700 font-bold rounded-full flex items-center justify-center mr-4">${index + 1}</div>
+                                            <div>
+                                                <h4 class="font-semibold text-slate-700">${item.step}</h4>
+                                                <p class="text-slate-600 text-sm">${item.text}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold mb-4 text-slate-800">OEM Value Proposition</h3>
+                                <div class="space-y-3">
+                                     ${solution.valueProp.map(item => `
+                                        <div class="flex items-center">
+                                            <span class="text-green-500 text-xl mr-3">✔</span>
+                                            <div>
+                                                <h4 class="font-semibold text-slate-700">${item.metric}</h4>
+                                                <p class="text-slate-600 text-sm">${item.desc}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <div class="mt-6">
+                                    <h3 class="text-lg font-bold mb-2 text-slate-800 text-center">Comparative Analysis</h3>
+                                     <div class="chart-container">
+                                        <canvas id="solutionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                modalBackdrop.classList.remove('hidden');
+                solutionModal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalBackdrop.style.opacity = '1';
+                }, 10);
+
+                document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+                
+                renderSolutionChart(solution.chartData);
+            }
+
+            function closeModal() {
+                 modalContent.classList.add('scale-95', 'opacity-0');
+                 modalBackdrop.style.opacity = '0';
+                 setTimeout(() => {
+                    modalBackdrop.classList.add('hidden');
+                    solutionModal.classList.add('hidden');
+                    if(solutionChart) {
+                        solutionChart.destroy();
+                        solutionChart = null;
+                    }
+                 }, 300);
+            }
+
+            function renderSolutionChart(data) {
+                const ctx = document.getElementById('solutionChart').getContext('2d');
+                if (solutionChart) {
+                    solutionChart.destroy();
+                }
+                solutionChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: Object.keys(data),
+                        datasets: [{
+                            label: 'Solution Score',
+                            data: Object.values(data),
+                            backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                            borderColor: 'rgb(14, 116, 144)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgb(14, 116, 144)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(14, 116, 144)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                                suggestedMin: 0,
+                                suggestedMax: 5,
+                                pointLabels: { font: { size: 12 } },
+                                grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                                ticks: {
+                                    stepSize: 1,
+                                    backdropColor: 'transparent'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            function handleFilterClick(e) {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filter = e.target.dataset.filter;
+
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('bg-sky-700', 'text-white');
+                        btn.classList.add('bg-white', 'text-slate-700');
+                    });
+                    e.target.classList.add('bg-sky-700', 'text-white');
+                    e.target.classList.remove('bg-white', 'text-slate-700');
+                    
+                    document.querySelectorAll('.pain-point-card').forEach(card => card.classList.remove('ring-2', 'ring-sky-500'));
+
+                    let filteredSolutions;
+                    if (filter === 'all') {
+                        filteredSolutions = DATA.solutions;
+                    } else {
+                        filteredSolutions = DATA.solutions.filter(s => s.type.includes(filter));
+                    }
+                    renderSolutions(filteredSolutions);
+                }
+            }
+            
+            function handlePainPointClick(e) {
+                const card = e.target.closest('.pain-point-card');
+                if (card) {
+                    const painPointId = parseInt(card.dataset.painPointId.replace('pp',''));
+                    const painPoint = DATA.painPoints.find(p => p.id === `pp${painPointId}`);
+
+                    document.querySelectorAll('.pain-point-card').forEach(c => c.classList.remove('ring-2', 'ring-sky-500'));
+                    card.classList.add('ring-2', 'ring-sky-500');
+
+                    const filteredSolutions = DATA.solutions.filter(s => painPoint.solutionIds.includes(s.id));
+                    renderSolutions(filteredSolutions);
+                    
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('bg-sky-700', 'text-white');
+                        btn.classList.add('bg-white', 'text-slate-700');
+                    });
+                    document.querySelector('.filter-btn[data-filter="all"]').classList.add('bg-sky-700', 'text-white');
+
+                    const solutionsSection = document.getElementById('solutions');
+                    solutionsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            function addSolutionCardListeners() {
+                document.querySelectorAll('.card[data-solution-id]').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        openModal(e.currentTarget.dataset.solutionId);
+                    });
+                });
+            }
+
+            modalBackdrop.addEventListener('click', closeModal);
+
+            renderPainPoints();
+            renderSolutions(DATA.solutions);
+            renderCompetition();
+            
+            filters.addEventListener('click', handleFilterClick);
+            painPointsContainer.addEventListener('click', handlePainPointClick);
+        });
+    </script>
+</body>
+</html>
